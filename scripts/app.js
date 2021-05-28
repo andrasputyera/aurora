@@ -3,6 +3,7 @@ const card = document.querySelector('.card');
 const details = document.querySelector('.details');
 const time = document.querySelector('img.time');
 const icon = document.querySelector('.icon img');
+const forecast = new Forecast();
 
 const updateInterface = (data) => {
     
@@ -23,7 +24,7 @@ const updateInterface = (data) => {
     `;
 
     // Update day/night & corresponding icon images
-    let timeSrc = cityWeather.isDayTime ? 'img/day.svg' : 'img/night.svg';
+    const timeSrc = cityWeather.IsDayTime ? 'img/day.svg' : 'img/night.svg';
     
     // let timeSrc = null;
     // if (cityWeather.IsDayTime) {
@@ -45,17 +46,17 @@ const updateInterface = (data) => {
      }
 }
 
-const updateCity = async (city) => {
+// const updateCity = async (city) => {
     
-    // Assigning the data from the functions we set up in forecast.js
-    // Store details for the city user types in
-    const cityDetails = await getCity(city);
-    // Store weather conditions for that specific city using the city's key provided in the details 
-    const cityWeather = await getWeather(cityDetails.Key);
+//     // Assigning the data from the functions we set up in forecast.js
+//     // Store details for the city user types in
+//     const cityDetails = await getCity(city);
+//     // Store weather conditions for that specific city using the city's key provided in the details 
+//     const cityWeather = await getWeather(cityDetails.Key);
 
-    // Stored object values returned together from data we recieve back from forecast.js
-    return { cityDetails, cityWeather }; 
-}
+//     // Stored object values returned together from data we recieve back from forecast.js
+//     return { cityDetails, cityWeather }; 
+// }
 
 cityForm.addEventListener('submit', event => {
     event.preventDefault();
@@ -65,7 +66,7 @@ cityForm.addEventListener('submit', event => {
     cityForm.reset();
 
     // Update the interface with the new city
-    updateCity(city)
+    forecast.updateCity(city)
         .then(data => updateInterface(data))
         .catch(err => console.log(err));
 
@@ -74,7 +75,7 @@ cityForm.addEventListener('submit', event => {
 })
 
 if (localStorage.getItem('city')) {
-    updateCity(localStorage.getItem('city'))
+    forecast.updateCity(localStorage.getItem('city'))
     .then(data => updateInterface(data))
     .catch(err => console.log(err));
 }
