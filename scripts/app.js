@@ -23,12 +23,15 @@ const updateInterface = (data) => {
     `;
 
     // Update day/night & corresponding icon images
-    let timeSrc = null;
-    if (cityWeather.IsDayTime) {
-        timeSrc = 'img/day.svg'
-    } else {
-        timeSrc = 'img/night.svg'
-    }
+    let timeSrc = cityWeather.isDayTime ? 'img/day.svg' : 'img/night.svg';
+    
+    // let timeSrc = null;
+    // if (cityWeather.IsDayTime) {
+    //     timeSrc = 'img/day.svg'
+    // } else {
+    //     timeSrc = 'img/night.svg'
+    // }
+
     // Set src attribute for time of day
     time.setAttribute('src', timeSrc);
 
@@ -65,4 +68,13 @@ cityForm.addEventListener('submit', event => {
     updateCity(city)
         .then(data => updateInterface(data))
         .catch(err => console.log(err));
+
+    // Set up local storage
+    localStorage.setItem('city', city);
 })
+
+if (localStorage.getItem('city')) {
+    updateCity(localStorage.getItem('city'))
+    .then(data => updateInterface(data))
+    .catch(err => console.log(err));
+}
